@@ -1,0 +1,16 @@
+      a {
+        color: #004466;
+        text-decoration: none;
+        font-family: Verdana, Arial, sans-serif;
+        font-size: 90%;
+      }
+      a:hover {
+        text-decoration: none;
+        font-family: Verdana, Arial, sans-serif;
+        font-size: 90%;
+      }
+      a:visited {
+        color: #666666;
+        font-family: Verdana, Arial, sans-serif;
+        font-size: 90%;
+      }
