@@ -11,3 +11,8 @@ cd raspi3-monitor
 chmod +x install.sh
 /install.sh
 ```
+
+After instalation, reboot the Pi.
+#
+
+    http://your-pi-ip/graphs
