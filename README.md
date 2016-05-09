@@ -15,4 +15,5 @@ chmod +x install.sh
 After instalation, reboot the Pi.
 #
 
-    http://your-pi-ip/graphs
+  http://your-pi-ip/graphs
+  
