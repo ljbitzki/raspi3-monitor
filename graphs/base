@@ -1,0 +1,156 @@
+<head>
+   <meta charset="utf-8" http-equiv="refresh" content="60;url=AMD-index.php">
+   <link rel="stylesheet" type="text/css" href="assets/_style.css">
+   <title>Monitoramento - RaspberryPi 3 em 2016-05-08</title>
+   <script src="https://www.google.com/jsapi"></script>
+   <script src="assets/jquery-1.10.1.min.js"></script>
+   <script src="assets/jquery.csv-0.71.js"></script>
+   <script type='text/javascript'>
+   google.load("visualization", "1", {packages:["corechart"]});
+   google.setOnLoadCallback(drawChartfromCSV);
+
+   function drawChartfromCSV(){
+         $.get("/graphs/csv/AMD-temp.csv", function(csvString) {
+            var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+            var data = new google.visualization.arrayToDataTable(arrayData);
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0,1,2,3]);
+         var options = {
+         isStacked: false,
+         title: " Temperatura - AMD ",
+          hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+          vAxis: {title: data.getColumnLabel(3), minValue: data.getColumnRange(3).min, maxValue: data.getColumnRange(3).max},
+               legend: { position: 'bottom' },
+                  crosshair: { trigger: 'both' },
+                  tooltip: { trigger: 'selection' },
+                  explorer: {
+                        maxZoomOut:1,
+                        keepInBounds: 'true'},
+                          series: {
+                                0: { lineWidth: 3 },
+                                1: { lineWidth: 2 },
+                                2: { lineWidth: 4 },
+                                3: { lineWidth: 4 }
+                                },
+                          colors: ['#ff6600', '#6666ff', '#00ff00']
+          };
+          var chart = new google.visualization.AreaChart(document.getElementById('csv2chart'));
+          chart.draw(view, options);
+         });
+   }
+   </script>
+
+   <script type='text/javascript'>
+   google.load("visualization", "1", {packages:["corechart"]});
+   google.setOnLoadCallback(drawChartfromCSV2);
+
+   function drawChartfromCSV2(){
+         $.get("/graphs/csv/AMD-cpu.csv", function(csvString) {
+            var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+            var data = new google.visualization.arrayToDataTable(arrayData);
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0,1,2,3]);
+         var options = {
+         isStacked: false,
+         title: " Processador - AMD ",
+          hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+          vAxis: {title: data.getColumnLabel(3), minValue: data.getColumnRange(3).min, maxValue: data.getColumnRange(3).max},
+               legend: { position: 'bottom' },
+                  crosshair: { trigger: 'both' },
+                  tooltip: { trigger: 'selection' },
+                  explorer: {
+                        maxZoomOut:1,
+                        keepInBounds: 'true'},
+                          series: {
+                                0: { lineWidth: 3 },
+                                1: { lineWidth: 2 },
+                                2: { lineWidth: 2 },
+                                3: { lineWidth: 2 }
+                                },
+                          colors: ['#111111', '#ff0000', '#00ff00']
+          };
+          var chart = new google.visualization.AreaChart(document.getElementById('csv2chart2'));
+          chart.draw(view, options);
+         });
+   }
+   </script>
+
+   <script type='text/javascript'>
+   google.load("visualization", "1", {packages:["corechart"]});
+   google.setOnLoadCallback(drawChartfromCSV3);
+
+   function drawChartfromCSV3(){
+         $.get("/graphs/csv/AMD-mem.csv", function(csvString) {
+            var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+            var data = new google.visualization.arrayToDataTable(arrayData);
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0,1,2,3]);
+         var options = {
+         isStacked: false,
+         title: " Memoria RAM - AMD ",
+          hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+          vAxis: {title: data.getColumnLabel(1), minValue: data.getColumnRange(1).min, maxValue: data.getColumnRange(1).max},
+               legend: { position: 'bottom' },
+                  crosshair: { trigger: 'both' },
+                  tooltip: { trigger: 'selection' },
+                  explorer: {
+                        maxZoomOut:1,
+                        keepInBounds: 'true'},
+                          series: {
+                                0: { lineWidth: 3 },
+                                1: { lineWidth: 2 },
+                                2: { lineWidth: 3 },
+                                3: { lineWidth: 3 }
+                                },
+                          colors: ['#111111', '#00ff00', '#0000ff']
+          };
+          var chart = new google.visualization.AreaChart(document.getElementById('csv2chart3'));
+          chart.draw(view, options);
+         });
+   }
+   </script>
+
+   <script type='text/javascript'>
+   google.load("visualization", "1", {packages:["corechart"]});
+   google.setOnLoadCallback(drawChartfromCSV4);
+
+   function drawChartfromCSV4(){
+         $.get("/graphs/csv/AMD-disk.csv", function(csvString) {
+            var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+            var data = new google.visualization.arrayToDataTable(arrayData);
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0,1,2]);
+         var options = {
+         isStacked: true,
+         title: " Cartao SD - AMD ",
+          hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+          vAxis: {title: data.getColumnLabel(2), minValue: data.getColumnRange(2).min, maxValue: data.getColumnRange(2).max},
+               legend: { position: 'bottom' },
+                  crosshair: { trigger: 'both' },
+                  tooltip: { trigger: 'selection' },
+                  explorer: {
+                        maxZoomOut:1,
+                        keepInBounds: 'true'},
+                          series: {
+                                0: { lineWidth: 3 },
+                                1: { lineWidth: 2 },
+                                2: { lineWidth: 4 }
+                                   },
+                          colors: ['#0000ff', '#00ff00']
+          };
+          var chart = new google.visualization.AreaChart(document.getElementById('csv2chart4'));
+          chart.draw(view, options);
+         });
+   }
+   </script>
+
+</head>
+<body>
+        <h1>Monitoramento RaspberryPi 3 - AMD</h1>
+        <div align="center"><a href="index.php" target="_parent">Voltar</a></div>
+   <div id="csv2chart"  style="width: 1300px; height: 620px;"> </div></br>
+   <div id="csv2chart2" style="width: 1300px; height: 620px;"> </div></br>
+   <div id="csv2chart3" style="width: 1300px; height: 620px;"> </div></br>
+   <div id="csv2chart4" style="width: 1300px; height: 620px;"> </div></br>
+        <div align="center"><a href="index.php" target="_parent">Voltar</a></div>
+</body>
