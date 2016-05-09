@@ -1,6 +1,6 @@
 #!/bin/bash
 apt-get update
-apt-get install vim ntpdate apache2 bc dnsutils snmpd -y
+apt-get install vim ntpdate apache2 php5 bc dnsutils snmp snmpd -y
 
 GPATH="/var/www/html/graphs"
 cp graphs.sh ntp.sh /etc
