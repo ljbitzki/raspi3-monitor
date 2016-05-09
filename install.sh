@@ -2,6 +2,9 @@
 apt-get update
 apt-get install vim ntpdate apache2 git bc dnsutils snmpd -y
 
+git clone https://github.com/ljbitzki/raspi3-monitor.git
+cd raspi3-monitor
+
 GPATH="/var/www/html/graphs"
 cp graphs.sh ntp.sh /etc
 chmod +x /etc/{graphs.sh,ntp.sh}
