@@ -11,7 +11,7 @@
       <h1>Monitoramento RaspberryPi 3</h1>
 <ol>
 <?php
-foreach (glob("2016*.php") as $filename) {
+foreach (glob("20*.php") as $filename) {
 printf('        <li><a href="%s">%s</a></li>' . "\n",
         $filename, $filename);
 }
