@@ -17,7 +17,7 @@ exit 0' >> /etc/rc.local
 echo -e 'view   systemonly  included   .1' >> /etc/snmp/snmpd.conf
 
 mkdir -p $GPATH/{csv,assets}
-cp index.php base $GPATH
+cp graphs/{index.php,base} $GPATH
 chown www-data:www:data $GPATH -R
 
 echo "Instalation completed!"
