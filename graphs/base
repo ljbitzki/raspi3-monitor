@@ -1,5 +1,6 @@
 <head>
    <meta charset="utf-8" http-equiv="refresh" content="60;url=AMD-index.php">
+   <link rel="shortcut icon" href="assets/favicon.ico" />
    <link rel="stylesheet" type="text/css" href="assets/_style.css">
    <title>Monitoramento - RaspberryPi 3 em 2016-05-08</title>
    <script src="https://www.google.com/jsapi"></script>
