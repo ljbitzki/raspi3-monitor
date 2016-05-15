@@ -144,6 +144,42 @@
    }
    </script>
 
+   <script type='text/javascript'>
+   google.load("visualization", "1", {packages:["corechart"]});
+   google.setOnLoadCallback(drawChartfromCSV5);
+
+   function drawChartfromCSV5(){
+         $.get("/graphs/csv/AMD-netq.csv", function(csvString) {
+            var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+            var data = new google.visualization.arrayToDataTable(arrayData);
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0,1,2,3,4]);
+         var options = {
+         isStacked: false,
+         title: " Potencia do Sinal da rede WiFi - AMD ",
+          hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+          vAxis: {title: data.getColumnLabel(2), minValue: data.getColumnRange(2).min, maxValue: data.getColumnRange(3).max},
+               legend: { position: 'bottom' },
+                  crosshair: { trigger: 'both' },
+                  tooltip: { trigger: 'selection' },
+                  explorer: {
+                        maxZoomOut:1,
+                        keepInBounds: 'true'},
+                          series: {
+                                0: { lineWidth: 3 },
+                                1: { lineWidth: 2 },
+                                2: { lineWidth: 4 },
+                                3: { lineWidth: 2 },
+                                4: { lineWidth: 4 }
+                                   },
+                          colors: ['#0000ff', '#ff0000', '#0000ff', '#00ff00']
+          };
+          var chart = new google.visualization.AreaChart(document.getElementById('csv2chart5'));
+          chart.draw(view, options);
+         });
+   }
+   </script>
+
 </head>
 <body>
         <h1>Monitoramento RaspberryPi 3 - AMD</h1>
@@ -152,5 +188,10 @@
    <div id="csv2chart2" style="width: 1300px; height: 620px;"> </div></br>
    <div id="csv2chart3" style="width: 1300px; height: 620px;"> </div></br>
    <div id="csv2chart4" style="width: 1300px; height: 620px;"> </div></br>
+   <div id="csv2chart5" style="width: 1300px; height: 620px;"> </div></br>
+   <div id="trafego" style="align: center; width: 1000px; height 40px;"></br>
+Total de dados enviados via wlan0: TX</br>
+Total de dados enviados via wlan0: RX
+   </div>
         <div align="center"><a href="index.php" target="_parent">Voltar</a></div>
 </body>
