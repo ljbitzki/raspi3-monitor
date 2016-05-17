@@ -56,31 +56,37 @@ SEDR="$(echo $RXC $RUNI)"
 SEDT="$(echo $TXC $TUNI)"
 
 # Processador
-CPUIDLE=$(snmpwalk -v1 -c public 127.0.0.1 .1.3.6.1.4.1.2021.11.11.0 | cut -d ':' -f2 | cut -d ' ' -f2)
-CPUUSER=$(snmpwalk -v1 -c public 127.0.0.1 .1.3.6.1.4.1.2021.11.9.0 | cut -d ':' -f2 | cut -d ' ' -f2)
-CPUSYSTEM=$(snmpwalk -v1 -c public 127.0.0.1 .1.3.6.1.4.1.2021.11.10.0 | cut -d ':' -f2 | cut -d ' ' -f2)
+CPUIDLE=$(mpstat | tail -1 | awk '{print $12}' | sed s/,/./g)
+CPUUSER=$(mpstat | tail -1 | awk '{print $3}' | sed s/,/./g)
+CPUSYSTEM=$(mpstat | tail -1 | awk '{print $5}' | sed s/,/./g)
 
 # Disco
-FREE=$(snmpwalk -v1 -c public 127.0.0.1 .1.3.6.1.4.1.2021.9.1.7.1 | cut -d ':' -f2 | cut -d ' ' -f2)
-USED=$(snmpwalk -v1 -c public 127.0.0.1 .1.3.6.1.4.1.2021.9.1.8.1 | cut -d ':' -f2 | cut -d ' ' -f2)
-FREEG=$(echo "scale=2;$FREE / 1024 / 1024" | bc)
-USEDG=$(echo "scale=2;$USED / 1024 / 1024" | bc)
+FREE1=$(df -h | grep 'root' | cut -d 'G' -f3 | tr -d ' ' | sed s/,/./g)
+FREE2=$(df -h | grep 'sda1' | cut -d 'G' -f3 | tr -d ' ' | sed s/,/./g)
+USED1=$(df -h | grep 'root' | cut -d 'G' -f2 | tr -d ' ' | sed s/,/./g)
+USED2=$(df -h | grep 'sda1' | cut -d 'G' -f2 | tr -d ' ' | sed s/,/./g)
 
 # Arquivos
 GRAPHT="$PATHG/csv/$AMD-temp.csv"
 GRAPHM="$PATHG/csv/$AMD-mem.csv"
 GRAPHC="$PATHG/csv/$AMD-cpu.csv"
-GRAPHD="$PATHG/csv/$AMD-disk.csv"
+GRAPHD1="$PATHG/csv/$AMD-disk1.csv"
+GRAPHD2="$PATHG/csv/$AMD-disk2.csv"
 GRAPHNQ="$PATHG/csv/$AMD-netq.csv"
 GRAPHNU="$PATHG/csv/$AMD-netu.csv"
 INDEX="$PATHG/$AMD-index.php"
 
 if [[ -e $INDEX ]]; then
    wait
+        cp $PATHG/base $INDEX
+        sed -i "s/TX/$SEDT/g" $INDEX
+        sed -i "s/RX/$SEDR/g" $INDEX
+        sed -i "s/AMD/$AMD/g" $INDEX
         echo "$HM,$TEMPM,$TEMPC,$TEMPA" >> $GRAPHT
         echo "$HM,$MEMT,$MEMA,$MEMC" >> $GRAPHM
         echo "$HM,$CPUIDLE,$CPUUSER,$CPUSYSTEM" >> $GRAPHC
-        echo "$HM,$USEDG,$FREEG" >> $GRAPHD
+        echo "$HM,$USED1,$FREE1" >> $GRAPHD1
+        echo "$HM,$USED2,$FREE2" >> $GRAPHD2
         echo "$HM,-35,-$SNRN,70,$QLT" >> $GRAPHNQ
         echo "$HM,$TXC,$RXC" >> $GRAPHNU
 else
@@ -93,8 +99,10 @@ else
         echo "$HM,$MEMT,$MEMA,$MEMC" >> $GRAPHM
         echo "Hora,CPU Idle,CPU Usuario,CPU Sistema" > $GRAPHC
         echo "$HM,$CPUIDLE,$CPUUSER,$CPUSYSTEM" >> $GRAPHC
-        echo "Hora,Espaco Utilizado - GB,Espaco Disponivel - GB" > $GRAPHD
-        echo "$HM,$USEDG,$FREEG" >> $GRAPHD
+        echo "Hora,Espaco Utilizado - GB,Espaco Disponivel - GB" > $GRAPHD1
+        echo "$HM,$USED1,$FREE1" >> $GRAPHD1
+        echo "Hora,Espaco Utilizado - GB,Espaco Disponivel - GB" > $GRAPHD2
+        echo "$HM,$USED2,$FREE2" >> $GRAPHD2
         echo "Hora,Potencia Maxima Possivel,Potencia Atual,Qualidade Maxima Possivel,Qualidade Atual" > $GRAPHNQ
         echo "$HM,-38,-$SNRN,70,$QLT" >> $GRAPHNQ
         sed -i "s/TX/$SEDT/g" $INDEX
