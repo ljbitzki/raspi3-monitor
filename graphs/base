@@ -1,112 +1,233 @@
-#!/bin/bash
-HM=$(date +"%H:%M")
-AMD=$(date +"%Y-%m-%d")
-PATHG="/var/www/html/graphs"
+<head>
+   <meta charset="utf-8" http-equiv="refresh" content="60;url=AMD-index.php">
+   <link rel="shortcut icon" href="assets/favicon.ico" />
+   <link rel="stylesheet" type="text/css" href="assets/_style.css">
+   <title>Monitoramento - RaspberryPi 3 em 2016-05-08</title>
+   <script src="https://www.google.com/jsapi"></script>
+   <script src="assets/jquery-1.10.1.min.js"></script>
+   <script src="assets/jquery.csv-0.71.js"></script>
+   <script type='text/javascript'>
+   google.load("visualization", "1", {packages:["corechart"]});
+   google.setOnLoadCallback(drawChartfromCSV);
 
-# Temperatura
-TEMP=$(/opt/vc/bin/vcgencmd measure_temp | cut -d '=' -f2)
-TEMPA=${TEMP::-2}
-TEMPC="60"
-TEMPM="75"
+   function drawChartfromCSV(){
+         $.get("/graphs/csv/AMD-temp.csv", function(csvString) {
+            var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+            var data = new google.visualization.arrayToDataTable(arrayData);
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0,1,2,3]);
+         var options = {
+         isStacked: false,
+         title: " Temperatura - AMD ",
+          hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+          vAxis: {title: data.getColumnLabel(3), minValue: data.getColumnRange(3).min, maxValue: data.getColumnRange(3).max},
+               legend: { position: 'bottom' },
+                  crosshair: { trigger: 'both' },
+                  tooltip: { trigger: 'selection' },
+                  explorer: {
+                        maxZoomOut:1,
+                        keepInBounds: 'true'},
+                          series: {
+                                0: { lineWidth: 3 },
+                                1: { lineWidth: 2 },
+                                2: { lineWidth: 4 },
+                                3: { lineWidth: 4 }
+                                },
+                          colors: ['#ff6600', '#6666ff', '#00ff00']
+          };
+          var chart = new google.visualization.AreaChart(document.getElementById('csv2chart'));
+          chart.draw(view, options);
+         });
+   }
+   </script>
 
-# Memória
-MEMTTMP=$(cat /proc/meminfo | grep MemTotal: | sed 's|[^0-9]||g')
-MEMT=$(echo "scale=2;$MEMTTMP / 1024" | bc )
-MEMATMP=$(cat /proc/meminfo | grep MemAvailable: | sed 's|[^0-9]||g')
-MEMA=$(echo "scale=2;$MEMATMP / 1024" | bc )
-MEMCTMP=$(cat /proc/meminfo | grep -w 'Cached:' | sed 's|[^0-9]||g')
-MEMC=$(echo "scale=2;$MEMCTMP / 1024" | bc )
+   <script type='text/javascript'>
+   google.load("visualization", "1", {packages:["corechart"]});
+   google.setOnLoadCallback(drawChartfromCSV2);
 
-#Rede Qualidade
-SNR=$(wavemon -d | grep 'SNR' | cut -d '-' -f2)
-SNRN=${SNR::-3}
-QLT=$(wavemon -d | grep 'link quality' | cut -d '/' -f1  | grep -o "[0-9][0-9]")
+   function drawChartfromCSV2(){
+         $.get("/graphs/csv/AMD-cpu.csv", function(csvString) {
+            var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+            var data = new google.visualization.arrayToDataTable(arrayData);
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0,1,2,3]);
+         var options = {
+         isStacked: false,
+         title: " Processador - AMD ",
+          hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+          vAxis: {title: data.getColumnLabel(3), minValue: data.getColumnRange(3).min, maxValue: data.getColumnRange(3).max},
+               legend: { position: 'bottom' },
+                  crosshair: { trigger: 'both' },
+                  tooltip: { trigger: 'selection' },
+                  explorer: {
+                        maxZoomOut:1,
+                        keepInBounds: 'true'},
+                          series: {
+                                0: { lineWidth: 3 },
+                                1: { lineWidth: 2 },
+                                2: { lineWidth: 2 },
+                                3: { lineWidth: 2 }
+                                },
+                          colors: ['#111111', '#ff0000', '#00ff00']
+          };
+          var chart = new google.visualization.AreaChart(document.getElementById('csv2chart2'));
+          chart.draw(view, options);
+         });
+   }
+   </script>
 
-#Rede Trafego
-RXB=$(cat /sys/class/net/wlan0/statistics/rx_bytes)
-TXB=$(cat /sys/class/net/wlan0/statistics/tx_bytes)
-if [ $RXB -le 1024000 ]; then
-RXC=$(echo "scale=2;$RXB / 1024" | bc)
-RUNI="KBytes"
-elif [ $RXB -ge 1024000 ] && [ $RXB -lt 102400000 ]; then
-RXC=$(echo "scale=2;$RXB / 1024 / 1024" | bc)
-RUNI="MBytes"
-elif [ $RXB -ge 102400000 ] && [ $RXB -lt 102400000000 ]; then
-RXC=$(echo "scale=2;$RXB / 1024 / 1024 / 1024" | bc)
-RUNI="GBytes"
-elif [ $RXB -ge 102400000000 ] && [ $RXB -lt 102400000000000 ]; then
-RXC=$(echo "scale=2;$RXB / 1024 / 1024 / 1024 / 1024" | bc)
-RUNI="TBytes"
-fi
+   <script type='text/javascript'>
+   google.load("visualization", "1", {packages:["corechart"]});
+   google.setOnLoadCallback(drawChartfromCSV3);
 
-if [ $TXB -le 1024000 ]; then
-TXC=$(echo "scale=2;$TXB / 1024" | bc)
-TUNI="KBytes"
-elif [ $TXB -ge 1024000 ] && [ $TXB -lt 102400000 ]; then
-TXC=$(echo "scale=2;$TXB / 1024 / 1024" | bc)
-TUNI="MBytes"
-elif [ $TXB -ge 102400000 ] && [ $TXB -lt 102400000000 ]; then
-TXC=$(echo "scale=2;$TXB / 1024 / 1024 / 1024" | bc)
-TUNI="GBytes"
-elif [ $TXB -ge 102400000000 ] && [ $TXB -lt 102400000000000 ]; then
-TXC=$(echo "scale=2;$TXB / 1024 / 1024 / 1024 / 1024" | bc)
-TUNI="TBytes"
-fi
-SEDR="$(echo $RXC $RUNI)"
-SEDT="$(echo $TXC $TUNI)"
+   function drawChartfromCSV3(){
+         $.get("/graphs/csv/AMD-mem.csv", function(csvString) {
+            var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+            var data = new google.visualization.arrayToDataTable(arrayData);
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0,1,2,3]);
+         var options = {
+         isStacked: false,
+         title: " Memoria RAM - AMD ",
+          hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+          vAxis: {title: data.getColumnLabel(1), minValue: data.getColumnRange(1).min, maxValue: data.getColumnRange(1).max},
+               legend: { position: 'bottom' },
+                  crosshair: { trigger: 'both' },
+                  tooltip: { trigger: 'selection' },
+                  explorer: {
+                        maxZoomOut:1,
+                        keepInBounds: 'true'},
+                          series: {
+                                0: { lineWidth: 3 },
+                                1: { lineWidth: 2 },
+                                2: { lineWidth: 3 },
+                                3: { lineWidth: 3 }
+                                },
+                          colors: ['#111111', '#00ff00', '#0000ff']
+          };
+          var chart = new google.visualization.AreaChart(document.getElementById('csv2chart3'));
+          chart.draw(view, options);
+         });
+   }
+   </script>
 
-# Processador
-CPUIDLE=$(mpstat | tail -1 | awk '{print $12}' | sed s/,/./g)
-CPUUSER=$(mpstat | tail -1 | awk '{print $3}' | sed s/,/./g)
-CPUSYSTEM=$(mpstat | tail -1 | awk '{print $5}' | sed s/,/./g)
+   <script type='text/javascript'>
+   google.load("visualization", "1", {packages:["corechart"]});
+   google.setOnLoadCallback(drawChartfromCSV4);
 
-# Disco
-FREE1=$(df -h | grep 'root' | cut -d 'G' -f3 | tr -d ' ' | sed s/,/./g)
-FREE2=$(df -h | grep 'sda1' | cut -d 'G' -f3 | tr -d ' ' | sed s/,/./g)
-USED1=$(df -h | grep 'root' | cut -d 'G' -f2 | tr -d ' ' | sed s/,/./g)
-USED2=$(df -h | grep 'sda1' | cut -d 'G' -f2 | tr -d ' ' | sed s/,/./g)
+   function drawChartfromCSV4(){
+         $.get("/graphs/csv/AMD-disk1.csv", function(csvString) {
+            var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+            var data = new google.visualization.arrayToDataTable(arrayData);
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0,1,2]);
+         var options = {
+         isStacked: true,
+         title: " Cartao SD - AMD ",
+          hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+          vAxis: {title: data.getColumnLabel(2), minValue: data.getColumnRange(2).min, maxValue: data.getColumnRange(2).max},
+               legend: { position: 'bottom' },
+                  crosshair: { trigger: 'both' },
+                  tooltip: { trigger: 'selection' },
+                  explorer: {
+                        maxZoomOut:1,
+                        keepInBounds: 'true'},
+                          series: {
+                                0: { lineWidth: 3 },
+                                1: { lineWidth: 2 },
+                                2: { lineWidth: 4 }
+                                   },
+                          colors: ['#0000ff', '#00ff00']
+          };
+          var chart = new google.visualization.AreaChart(document.getElementById('csv2chart4'));
+          chart.draw(view, options);
+         });
+   }
+   </script>
 
-# Arquivos
-GRAPHT="$PATHG/csv/$AMD-temp.csv"
-GRAPHM="$PATHG/csv/$AMD-mem.csv"
-GRAPHC="$PATHG/csv/$AMD-cpu.csv"
-GRAPHD1="$PATHG/csv/$AMD-disk1.csv"
-GRAPHD2="$PATHG/csv/$AMD-disk2.csv"
-GRAPHNQ="$PATHG/csv/$AMD-netq.csv"
-GRAPHNU="$PATHG/csv/$AMD-netu.csv"
-INDEX="$PATHG/$AMD-index.php"
+   <script type='text/javascript'>
+   google.load("visualization", "1", {packages:["corechart"]});
+   google.setOnLoadCallback(drawChartfromCSV5);
 
-if [[ -e $INDEX ]]; then
-   wait
-        cp $PATHG/base $INDEX
-        sed -i "s/TX/$SEDT/g" $INDEX
-        sed -i "s/RX/$SEDR/g" $INDEX
-        sed -i "s/AMD/$AMD/g" $INDEX
-        echo "$HM,$TEMPM,$TEMPC,$TEMPA" >> $GRAPHT
-        echo "$HM,$MEMT,$MEMA,$MEMC" >> $GRAPHM
-        echo "$HM,$CPUIDLE,$CPUUSER,$CPUSYSTEM" >> $GRAPHC
-        echo "$HM,$USED1,$FREE1" >> $GRAPHD1
-        echo "$HM,$USED2,$FREE2" >> $GRAPHD2
-        echo "$HM,-35,-$SNRN,70,$QLT" >> $GRAPHNQ
-        echo "$HM,$TXC,$RXC" >> $GRAPHNU
-else
-        cp $PATHG/base $INDEX
-    wait
-        sed -i "s/AMD/$AMD/g" $INDEX
-        echo "Hora,Critico,Atencao,Temperatura Atual" > $GRAPHT
-        echo "$HM,$TEMPM,$TEMPC,$TEMPA" >> $GRAPHT
-        echo "Hora,Memoria Total - MB,Memoria Disponivel - MB,Memoria em Cache - MB" > $GRAPHM
-        echo "$HM,$MEMT,$MEMA,$MEMC" >> $GRAPHM
-        echo "Hora,CPU Idle,CPU Usuario,CPU Sistema" > $GRAPHC
-        echo "$HM,$CPUIDLE,$CPUUSER,$CPUSYSTEM" >> $GRAPHC
-        echo "Hora,Espaco Utilizado - GB,Espaco Disponivel - GB" > $GRAPHD1
-        echo "$HM,$USED1,$FREE1" >> $GRAPHD1
-        echo "Hora,Espaco Utilizado - GB,Espaco Disponivel - GB" > $GRAPHD2
-        echo "$HM,$USED2,$FREE2" >> $GRAPHD2
-        echo "Hora,Potencia Maxima Possivel,Potencia Atual,Qualidade Maxima Possivel,Qualidade Atual" > $GRAPHNQ
-        echo "$HM,-38,-$SNRN,70,$QLT" >> $GRAPHNQ
-        sed -i "s/TX/$SEDT/g" $INDEX
-        sed -i "s/RX/$SEDR/g" $INDEX
-    wait
-        chown www-data:www-data $PATHG/csv/* /$PATHG/*.php
-   fi
+   function drawChartfromCSV5(){
+         $.get("/graphs/csv/AMD-disk2.csv", function(csvString) {
+            var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+            var data = new google.visualization.arrayToDataTable(arrayData);
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0,1,2]);
+         var options = {
+         isStacked: true,
+         title: " HD 1TeraByte - AMD ",
+          hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+          vAxis: {title: data.getColumnLabel(2), minValue: data.getColumnRange(2).min, maxValue: data.getColumnRange(2).max},
+               legend: { position: 'bottom' },
+                  crosshair: { trigger: 'both' },
+                  tooltip: { trigger: 'selection' },
+                  explorer: {
+                        maxZoomOut:1,
+                        keepInBounds: 'true'},
+                          series: {
+                                0: { lineWidth: 3 },
+                                1: { lineWidth: 2 },
+                                2: { lineWidth: 4 }
+                                   },
+                          colors: ['#0000ff', '#00ff00']
+          };
+          var chart = new google.visualization.AreaChart(document.getElementById('csv2chart5'));
+          chart.draw(view, options);
+         });
+   }
+   </script>
+
+   <script type='text/javascript'>
+   google.load("visualization", "1", {packages:["corechart"]});
+   google.setOnLoadCallback(drawChartfromCSV6);
+
+   function drawChartfromCSV6(){
+         $.get("/graphs/csv/AMD-netq.csv", function(csvString) {
+            var arrayData = $.csv.toArrays(csvString, {onParseValue: $.csv.hooks.castToScalar});
+            var data = new google.visualization.arrayToDataTable(arrayData);
+            var view = new google.visualization.DataView(data);
+            view.setColumns([0,1,2,3,4]);
+         var options = {
+         isStacked: false,
+         title: " Potencia do Sinal da rede WiFi - AMD ",
+          hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
+          vAxis: {title: data.getColumnLabel(2), minValue: data.getColumnRange(2).min, maxValue: data.getColumnRange(3).max},
+               legend: { position: 'bottom' },
+                  crosshair: { trigger: 'both' },
+                  tooltip: { trigger: 'selection' },
+                  explorer: {
+                        maxZoomOut:1,
+                        keepInBounds: 'true'},
+                          series: {
+                                0: { lineWidth: 3 },
+                                1: { lineWidth: 2 },
+                                2: { lineWidth: 4 },
+                                3: { lineWidth: 2 },
+                                4: { lineWidth: 4 }
+                                   },
+                          colors: ['#0000ff', '#ff0000', '#0000ff', '#00ff00']
+          };
+          var chart = new google.visualization.AreaChart(document.getElementById('csv2chart6'));
+          chart.draw(view, options);
+         });
+   }
+   </script>
+
+</head>
+<body>
+        <h1>Monitoramento RaspberryPi 3 - AMD</h1>
+        <div align="center"><a href="index.php" target="_parent">Voltar</a></div>
+   <div id="csv2chart"  style="width: 1300px; height: 620px;"> </div></br>
+   <div id="csv2chart2" style="width: 1300px; height: 620px;"> </div></br>
+   <div id="csv2chart3" style="width: 1300px; height: 620px;"> </div></br>
+   <div id="csv2chart4" style="width: 1300px; height: 620px;"> </div></br>
+   <div id="csv2chart5" style="width: 1300px; height: 620px;"> </div></br>
+   <div id="csv2chart6" style="width: 1300px; height: 620px;"> </div></br>
+   <div id="trafego" style="align: center; width: 1000px; height 40px;"></br>
+Total de dados enviados via wlan0:  TX</br>
+Total de dados recebidos via wlan0: RX
+   </div>
+        <div align="center"><a href="index.php" target="_parent">Voltar</a></div>
+</body>
