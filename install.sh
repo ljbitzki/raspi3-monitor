@@ -1,6 +1,6 @@
 #!/bin/bash
 apt-get update
-apt-get install vim ntpdate apache2 php5 bc dnsutils snmp snmpd -y
+apt-get install vim ntpdate apache2 php5 bc dnsutils sysstat -y
 
 GPATH="/var/www/html/graphs"
 cp graphs.sh ntp.sh /etc
@@ -13,8 +13,6 @@ echo -e '*  *    * * *   root    /etc/graphs.sh
 sed -i '$ d' /etc/rc.local
 echo -e '/etc/ntp &
 exit 0' >> /etc/rc.local
-
-echo -e 'view   systemonly  included   .1' >> /etc/snmp/snmpd.conf
 
 mkdir -p $GPATH/{csv,assets}
 cp graphs/{index.php,base} $GPATH
