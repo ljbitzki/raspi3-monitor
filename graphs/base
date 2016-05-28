@@ -1,8 +1,12 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-   <meta charset="utf-8" http-equiv="refresh" content="60;url=AMD-index.php">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+   <meta charset="utf-8" http-equiv="refresh" content="300;url=AMD-index.php">
    <link rel="shortcut icon" href="assets/favicon.ico" />
-   <link rel="stylesheet" type="text/css" href="assets/_style.css">
-   <title>Monitoramento - RaspberryPi 3 em 2016-05-08</title>
+   <title>Monitoramento - RaspberryPi 3 em AMD</title>
    <script src="https://www.google.com/jsapi"></script>
    <script src="assets/jquery-1.10.1.min.js"></script>
    <script src="assets/jquery.csv-0.71.js"></script>
@@ -18,7 +22,7 @@
             view.setColumns([0,1,2,3]);
          var options = {
          isStacked: false,
-         title: " Temperatura - AMD ",
+         title: " Temperatura ",
           hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
           vAxis: {title: data.getColumnLabel(3), minValue: data.getColumnRange(3).min, maxValue: data.getColumnRange(3).max},
                legend: { position: 'bottom' },
@@ -53,7 +57,7 @@
             view.setColumns([0,1,2,3]);
          var options = {
          isStacked: false,
-         title: " Processador - AMD ",
+         title: " Processador ",
           hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
           vAxis: {title: data.getColumnLabel(3), minValue: data.getColumnRange(3).min, maxValue: data.getColumnRange(3).max},
                legend: { position: 'bottom' },
@@ -88,7 +92,7 @@
             view.setColumns([0,1,2,3]);
          var options = {
          isStacked: false,
-         title: " Memoria RAM - AMD ",
+         title: " Memoria RAM ",
           hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
           vAxis: {title: data.getColumnLabel(1), minValue: data.getColumnRange(1).min, maxValue: data.getColumnRange(1).max},
                legend: { position: 'bottom' },
@@ -123,7 +127,7 @@
             view.setColumns([0,1,2]);
          var options = {
          isStacked: true,
-         title: " Cartao SD - AMD ",
+         title: " Cartao SD ",
           hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
           vAxis: {title: data.getColumnLabel(2), minValue: data.getColumnRange(2).min, maxValue: data.getColumnRange(2).max},
                legend: { position: 'bottom' },
@@ -157,7 +161,7 @@
             view.setColumns([0,1,2]);
          var options = {
          isStacked: true,
-         title: " HD 1TeraByte - AMD ",
+         title: " HD 1TeraByte ",
           hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
           vAxis: {title: data.getColumnLabel(2), minValue: data.getColumnRange(2).min, maxValue: data.getColumnRange(2).max},
                legend: { position: 'bottom' },
@@ -191,7 +195,7 @@
             view.setColumns([0,1,2,3,4]);
          var options = {
          isStacked: false,
-         title: " Potencia do Sinal da rede WiFi - AMD ",
+         title: " Potencia do Sinal da rede WiFi ",
           hAxis: {title: data.getColumnLabel(0), minValue: data.getColumnRange(0).min, maxValue: data.getColumnRange(0).max},
           vAxis: {title: data.getColumnLabel(2), minValue: data.getColumnRange(2).min, maxValue: data.getColumnRange(3).max},
                legend: { position: 'bottom' },
@@ -214,20 +218,20 @@
          });
    }
    </script>
-
 </head>
 <body>
         <h1>Monitoramento RaspberryPi 3 - AMD</h1>
-        <div align="center"><a href="index.php" target="_parent">Voltar</a></div>
-   <div id="csv2chart"  style="width: 1300px; height: 620px;"> </div></br>
-   <div id="csv2chart2" style="width: 1300px; height: 620px;"> </div></br>
-   <div id="csv2chart3" style="width: 1300px; height: 620px;"> </div></br>
-   <div id="csv2chart4" style="width: 1300px; height: 620px;"> </div></br>
-   <div id="csv2chart5" style="width: 1300px; height: 620px;"> </div></br>
-   <div id="csv2chart6" style="width: 1300px; height: 620px;"> </div></br>
-   <div id="trafego" style="align: center; width: 1000px; height 40px;"></br>
+   <div id="csv2chart"  style="width: 1800px; height: 620px;"> </div></br>
+   <div id="csv2chart2" style="width: 1800px; height: 620px;"> </div></br>
+   <div id="csv2chart3" style="width: 1800px; height: 620px;"> </div></br>
+   <div id="csv2chart4" style="width: 1800px; height: 620px;"> </div></br>
+   <div id="csv2chart5" style="width: 1800px; height: 620px;"> </div></br>
+   <div id="csv2chart6" style="width: 1800px; height: 620px;"> </div></br>
+   <div id="trafego" style="align: center; width: 1000px; height 40px;"></div></br>
+<div style="align: right">
 Total de dados enviados via wlan0:  TX</br>
-Total de dados recebidos via wlan0: RX
-   </div>
-        <div align="center"><a href="index.php" target="_parent">Voltar</a></div>
+Total de dados recebidos via wlan0: RX</br>
+Uptime: UPT
+</div>
 </body>
+</html>
