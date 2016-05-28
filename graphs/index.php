@@ -1,22 +1,30 @@
-<!DOCTYPE html>
-<html lang="en-US">
-  <head>
-    <meta charset="utf-8"/>
-        <link rel="shortcut icon" href="assets/favicon.ico" />
-        <link rel="stylesheet" type="text/css" href="assets/style.css">
-    <title>Monitoramento RaspiberryPi 3</title>
-  </head>
-  <body>
-    <article>
-      <h1>Monitoramento RaspberryPi 3</h1>
-<ol>
-<?php
-foreach (glob("20*.php") as $filename) {
-printf('        <li><a href="%s">%s</a></li>' . "\n",
-        $filename, $filename);
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Bitzpi - The Fucking Raspi Motherfucking Pi</title>
+<style type="text/css">
+body {
+	background-image: url(overlay.png);
+	background-repeat: repeat;
 }
-?>
-      </ol>
-    </article>
-  </body>
+</style>
+</head>
+
+<body bgcolor="#000000">
+<table width="200" border="0" align="center">
+  <tr align="center" valign="middle">
+    <td height="225" colspan="5"><a href="http://192.168.0.13"><img src="rasp.png" width="158" height="200" align="middle" /></a></td>
+  </tr>
+  <tr align="center" valign="top">
+    <td height="83" colspan="5"><img src="bitzpi.png" width="615" height="40" align="top" /></td>
+  </tr>
+  <tr>
+    <td><a href="http://IP/graphs/monitoramento.php"><img src="graphs.png" width="115" height="115" /></a></td>
+    <td><a href="http://IP:8200"><img src="dlna.png" width="150" height="150" /></a></td>
+    <td><a href="http://IP/owncloud"><img src="ownc.png" width="200" height="99" /></a></td>
+    <td><a href="http://IP:9091"><img src="transm.png" width="126" height="126" /></a></td>
+  </tr>
+</table>
+</body>
 </html>
