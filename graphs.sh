@@ -2,6 +2,7 @@
 HM=$(date +"%H:%M")
 AMD=$(date +"%Y-%m-%d")
 PATHG="/var/www/html/graphs"
+UPT=$(uptime -p | sed "s/up //g")
 
 # Temperatura
 TEMP=$(/opt/vc/bin/vcgencmd measure_temp | cut -d '=' -f2)
@@ -82,12 +83,13 @@ if [[ -e $INDEX ]]; then
         sed -i "s/TX/$SEDT/g" $INDEX
         sed -i "s/RX/$SEDR/g" $INDEX
         sed -i "s/AMD/$AMD/g" $INDEX
+	sed -i "s/UPT/$UPT/g" $INDEX
         echo "$HM,$TEMPM,$TEMPC,$TEMPA" >> $GRAPHT
         echo "$HM,$MEMT,$MEMA,$MEMC" >> $GRAPHM
         echo "$HM,$CPUIDLE,$CPUUSER,$CPUSYSTEM" >> $GRAPHC
         echo "$HM,$USED1,$FREE1" >> $GRAPHD1
         echo "$HM,$USED2,$FREE2" >> $GRAPHD2
-        echo "$HM,-35,-$SNRN,70,$QLT" >> $GRAPHNQ
+        echo "$HM,-30,-$SNRN,70,$QLT" >> $GRAPHNQ
         echo "$HM,$TXC,$RXC" >> $GRAPHNU
 else
         cp $PATHG/base $INDEX
@@ -104,9 +106,10 @@ else
         echo "Hora,Espaco Utilizado - GB,Espaco Disponivel - GB" > $GRAPHD2
         echo "$HM,$USED2,$FREE2" >> $GRAPHD2
         echo "Hora,Potencia Maxima Possivel,Potencia Atual,Qualidade Maxima Possivel,Qualidade Atual" > $GRAPHNQ
-        echo "$HM,-38,-$SNRN,70,$QLT" >> $GRAPHNQ
+        echo "$HM,-30,-$SNRN,70,$QLT" >> $GRAPHNQ
         sed -i "s/TX/$SEDT/g" $INDEX
         sed -i "s/RX/$SEDR/g" $INDEX
+	sed -i "s/UPT/$UPT/g" $INDEX
     wait
         chown www-data:www-data $PATHG/csv/* /$PATHG/*.php
    fi
